@@ -62,8 +62,10 @@ Built with **OpenCV**, **MediaPipe Tasks**, and a modern **CustomTkinter** dashb
 │   │   └── tracker.py         # MediaPipe inference & hardware capability probing
 │   └── main.py                # Application entry point
 │
+├── .gitattributes
 ├── .gitignore
 ├── README.md
+├── LICENSE
 └── requirements.txt
 
 ```
@@ -82,3 +84,47 @@ Built with **OpenCV**, **MediaPipe Tasks**, and a modern **CustomTkinter** dashb
   * Grace-frame caching for high-speed motion blur recovery.
 
 ---
+
+## 🚀 Getting Started
+
+### Prerequisites
+* **OS:** Windows 10 / 11 (64-bit) *(Required for Win32 `ctypes` driver)*
+* **Python:** 3.10 or 3.11 (64-bit)
+* **Hardware:** Built-in or external USB webcam
+
+### Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/Venura-Shiromal/Gesture-to-Mouse.git](https://github.com/Venura-Shiromal/Gesture-to-Mouse.git)
+   cd Gesture-to-Mouse
+   ```
+
+2. **Create and Activate Virtual Environments**
+   ```bash
+   python -m venv .venv
+   .venv\Scripts\activate.ps1
+   ```
+   
+3. **Install Requirements**
+   ```bash
+   pip install -r requirements.txt
+   ```
+   
+4. **Launch the Application**
+   ```bash
+   python app/main.py
+   ```
+
+---
+
+### Add a Standalone Pre-Built Binary Section *(For Non-Developers)*
+Direct non-developer users straight to your GitHub Releases so they don't have to install Python.
+
+## 📦 Download Standalone Executable (Windows x64)
+
+Don't want to install Python? Download the pre-packaged release:
+
+1. Grab the latest `AI-Air-Mouse-v1.0.0-Win64.zip` from the [Releases](https://github.com/Venura-Shiromal/Gesture-to-Mouse/releases) page.
+2. Extract the archive.
+3. Run `AI-Air-Mouse.exe`.
