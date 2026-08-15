@@ -96,7 +96,7 @@ Built with **OpenCV**, **MediaPipe Tasks**, and a modern **CustomTkinter** dashb
 
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/Venura-Shiromal/Gesture-to-Mouse.git](https://github.com/Venura-Shiromal/Gesture-to-Mouse.git)
+   git clone https://github.com/Venura-Shiromal/Gesture-to-Mouse.git
    cd Gesture-to-Mouse
    ```
 
