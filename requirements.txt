@@ -1,7 +1,11 @@
-opencv-python
-mediapipe
-pyautogui
-numpy
-keyboard
-Pillow
-pystray
+# Computer Vision & Machine Learning
+mediapipe>=0.10.14
+opencv-python>=4.9.0.80
+
+# GUI & Graphics
+customtkinter>=5.2.2
+Pillow>=10.0.0
+
+# OS Automation & Input Control
+pyautogui>=0.9.54
+pystray>=0.19.5
