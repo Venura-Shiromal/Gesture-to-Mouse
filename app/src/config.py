@@ -2,6 +2,9 @@ import os
 import sys
 import pyautogui
 
+pyautogui.PAUSE = 0.0
+pyautogui.FAILSAFE = False
+
 def get_resource_path(relative_path: str) -> str:
     """Get absolute path to resource, works in dev (relative to project root) and PyInstaller."""
     if hasattr(sys, '_MEIPASS'):
@@ -65,6 +68,4 @@ MOVE_DEADZONE = 3.0          # Deadzone for resting hand jitter
 BUFFER_SIZE = 5              # Moving average buffer window length
 
 # ==================== SYSTEM ==================== #
-pyautogui.PAUSE = 0.0
-pyautogui.FAILSAFE = False
 SCREEN_WIDTH, SCREEN_HEIGHT = pyautogui.size()
