@@ -1,8 +1,38 @@
 # AI Air Mouse 🖐️🖱️
 
-An experimental computer vision project that turns real-time hand gestures captured via a webcam into virtual mouse controls (cursor movement, clicking, dragging, scrolling, etc.).
+An AI-powered computer vision desktop application that transforms real-time webcam hand gestures into fluid, low-latency virtual mouse controls (cursor tracking, left/right/double clicks, drag-and-drop, touchpad scrolling, and middle click).
 
-> **Note:** This project documents my hands-on learning curve and iterative testing process with OpenCV, MediaPipe Tasks, and OS-level input automation.
+Built with **OpenCV**, **MediaPipe Tasks**, and a modern **CustomTkinter** dashboard interface.
+
+---
+
+## ✨ Key Features
+
+* **Modern Dark-Themed GUI Dashboard:** Clean CustomTkinter interface with live vision preview, dynamic real-time status badges, and icon controls.
+* **Low-Latency Direct OS Control:** Direct Windows Win32 API cursor positioning via `ctypes` (`SetCursorPos`) bypassing software latency limits.
+* **Jitter Smoothing & Deadzone Physics:** Moving-average coordinate buffers and velocity-based deadzones for steady, non-shaky cursor tracking.
+* **State-Machine Gesture Engine:** Accurately distinguishes quick taps from sustained holds for flawless drag-and-drop and double-click handling.
+* **Dynamic Hardware Prober & Calibration Suite:**
+  * Background hardware scanning for camera-supported resolutions and FPS targets.
+  * In-app preferences tab for model confidence, visual overlays, and gesture distances.
+  * Non-blocking staged settings with an **Apply Changes** commitment workflow.
+* **High-Performance Headless Mode:** Toggle camera preview off in the GUI to reduce CPU/GPU load while keeping hand tracking active.
+
+---
+
+## ✋ Gesture Control Guide
+
+> **Note:** The **Thumb + Index pinch** acts as the master cursor engagement posture. Clicks and drag actions are triggered using other fingers *while* maintaining active cursor control.
+
+| Action | Hand Posture | Description |
+| :--- | :--- | :--- |
+| **Move Cursor** | **Thumb + Index** Pinch | Pinch thumb and index tips together to activate cursor tracking and move across the screen. |
+| **Left Click** | **Index + Middle** Tap | While tracking cursor, tap index and middle fingertips together once. |
+| **Double Click** | **Index + Middle** Double Tap | While tracking cursor, tap index and middle fingertips together rapidly twice. |
+| **Drag & Drop** | **Index + Middle** Hold + Move | While tracking cursor, hold index and middle fingers together and move past the drag threshold; separate fingers to drop. |
+| **Right Click** | **Index + Ring** Tap | While tracking cursor, tap index and ring fingertips together. |
+| **Scroll Mode** | **Thumb + Ring** Pinch | Pinch thumb and ring fingertips together and move your hand vertically up or down. |
+| **Middle Click** | **Thumb + Pinky** Pinch | Pinch thumb and pinky fingertips together once. |
 
 ---
 
@@ -13,42 +43,42 @@ An experimental computer vision project that turns real-time hand gestures captu
 ├── models/
 │   └── hand_landmarker.task   # MediaPipe Hand Landmarker task bundle
 │
-└── tests/
-    ├── 1_VideoCapture.ipynb   # Step 1: Camera capture, frame flipping, and display loop
-    ├── 2_HandTracking.ipynb   # Step 2: MediaPipe task setup and landmark extraction
-    ├── 3_CursorMapping.ipynb  # Step 3: Coordinate projection and cursor tracking
-    ├── 4_FullMapping.ipynb    # Step 4: Complete gesture mapping (clicks, drag, scroll)
-    └── 5_Optimization.ipynb   # Step 5: Jitter reduction, ctypes input, and performance tuning
+├── tests/
+│   ├── 1_VideoCapture.ipynb   # Step 1: Camera capture, mirroring, and display loop
+│   ├── 2_HandTracking.ipynb   # Step 2: MediaPipe task setup and landmark extraction
+│   ├── 3_CursorMapping.ipynb  # Step 3: Coordinate interpolation and smoothing
+│   ├── 4_FullMapping.ipynb    # Step 4: Gesture threshold state machine & actions
+│   └── 5_Optimization.ipynb   # Step 5: Jitter reduction, ctypes input, and latency tuning
+│
+├── app/
+│   ├── assets/                # App icons, UI graphics, and task models
+│   ├── src/
+│   │   ├── __init__.py
+│   │   ├── app.py             # Main background tracking loop & state coordinator
+│   │   ├── config.py          # Centralized configuration & resource paths
+│   │   ├── controller.py      # Low-level OS input driver & smoothing buffers
+│   │   ├── gestures.py        # Gesture recognition state machine
+│   │   ├── gui.py             # CustomTkinter dashboard & preferences window
+│   │   └── tracker.py         # MediaPipe inference & hardware capability probing
+│   └── main.py                # Application entry point
+│
+├── .gitignore
+├── README.md
+└── requirements.txt
 
 ```
-
 ---
 
 ## 🧭 Learning Curve & Test Breakdown
 
-* **`VideoCapture.ipynb`** — Setting up OpenCV video capture (`cv2.VideoCapture`), frame sizing, horizontal mirroring, and latency benchmarking.
-* **`HandTracking.ipynb`** — Integrating the MediaPipe Tasks Python API (`vision.HandLandmarker`), configuring confidence thresholds, and landmark extraction.
-* **`CursorMapping.ipynb`** — Mapping bounding box coordinate spaces to monitor resolutions using interpolation (`numpy.interp`) and applying initial smoothing algorithms.
-* **`FullMapping.ipynb`** — Designing and testing gesture distance thresholds:
-  * **Move Cursor:** Thumb + Index pinch
-  * **Left Click / Double Click:** Index + Middle tap
-  * **Drag & Drop:** Index + Middle hold with movement threshold
-  * **Right Click:** Index + Ring tap
-  * **Touchpad Scroll:** Thumb + Ring pinch with vertical displacement
-  * **Middle Click:** Thumb + Pinky pinch
-* **`Optimization.ipynb`** — Advanced stability and latency improvements:
-  * Removing software pauses (`pyautogui.PAUSE = 0.0`)
-  * Low-latency Windows OS cursor control via `ctypes` (`SetCursorPos`)
-  * Jitter filtering using moving average buffers (`collections.deque`) and dynamic alpha smoothing
-  * Grace-frame caching for fast-motion recovery
-  * Headless/background testing without UI render overhead
+* **`1_VideoCapture.ipynb`** — OpenCV frame capture (`cv2.VideoCapture`), horizontal mirroring for natural hand interaction, and FPS measurement.
+* **`2_HandTracking.ipynb`** — Integrating the MediaPipe Tasks Python API (`vision.HandLandmarker`), confidence tuning, and joint landmark extraction.
+* **`3_CursorMapping.ipynb`** — Mapping bounding box coordinate spaces to monitor resolutions using interpolation (`numpy.interp`) and smoothing algorithms.
+* **`4_FullMapping.ipynb`** — Designing and validating gesture distance thresholds and posture logic for click, drag, right-click, and scroll operations.
+* **`5_Optimization.ipynb`** — Core performance engineering:
+  * Eliminating framework pauses (`pyautogui.PAUSE = 0.0`).
+  * Direct OS cursor manipulation via `ctypes.windll.user32.SetCursorPos`.
+  * Moving-average smoothing buffers (`collections.deque`) with jitter deadzones.
+  * Grace-frame caching for high-speed motion blur recovery.
 
 ---
-
-## ⚙️ Requirements
-
-* Python 3.9+
-* OpenCV (`opencv-python`)
-* MediaPipe (`mediapipe`)
-* PyAutoGUI (`pyautogui`)
-* NumPy (`numpy`)
